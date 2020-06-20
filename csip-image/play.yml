@@ -1,0 +1,4 @@
+---
+- name: install ansible
+  hosts: localhost
+  become: 
