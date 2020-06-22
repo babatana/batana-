@@ -1,0 +1,17 @@
+total 0
+drwxrwxrwx 1 batana batana 4096 Jun 21 07:31 .
+drwxrwxrwx 1 batana batana 4096 Jun 16 07:18 ..
+-rw-rw-rw- 1 batana batana    0 Jun 16 16:31 3.0.0.yml
+-rw-rw-rw- 1 batana batana   96 Jun 21 06:29 caseStatement.sh
+-rwxrwxrwx 1 batana batana  512 Jun 21 06:26 condition.sh
+-rw-rw-rw- 1 batana batana   12 Jun 20 07:33 cron_job.sh
+-rwxrwxrwx 1 batana batana  302 Jun 20 09:31 helloScript.sh
+-rw-rw-rw- 1 batana batana   96 Jun 20 09:21 helloScript.txt
+-rw-rw-rw- 1 batana batana  512 Jun 21 06:26 ifStatement.sh
+-rw-rw-rw- 1 batana batana  356 Jun 16 19:59 local.yml
+-rwxrwxrwx 1 batana batana  568 Jun 21 06:58 loops.sh
+-rw-rw-rw- 1 batana batana   58 Jun 16 16:32 play.yml
+-rwxrwxrwx 1 batana batana  508 Jun 21 07:26 scriptInput.sh
+-rwxrwxrwx 1 batana batana  302 Jun 21 07:37 scriptOutput.sh
+-rw-rw-rw- 1 batana batana    0 Jun 21 07:37 stderr.txt
+-rw-rw-rw- 1 batana batana    0 Jun 21 07:37 stdout.txt
