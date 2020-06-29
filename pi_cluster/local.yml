@@ -3,7 +3,7 @@
   remote_user: root
   tasks:   
   - name: Updating /etc/hosts
-  - name: "Installing necessary packages"
+  - name: Installing necessary packages
     apt:
       pkg:
       - nfs-kernel-server
