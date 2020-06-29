@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  remote_user: root
+  tasks:   
+  - name: "Updating /etc/hosts" 
+  - name: "Installing necessary packages"
+    apt:
+      pkg:
+      - nfs-kernel-server
+      - ntp 
+      - openmpi-bin openmpi-common libopenmpi3 libopenmpi-dev 
+  
+  - name: "Setting up passwordless SSH"
+  - name: "Configuring NFS"
+  - name: "Configuring NTP"
+  
