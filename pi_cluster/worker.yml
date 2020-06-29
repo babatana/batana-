@@ -2,7 +2,7 @@
 - hosts: localhost
   remote_user: root
   tasks:   
-  - name: "Updating /etc/hosts" 
+  - name: Updating /etc/hosts
   - name: "Installing necessary packages"
     apt:
       pkg:
@@ -10,7 +10,40 @@
       - ntp 
       - openmpi-bin openmpi-common libopenmpi3 libopenmpi-dev 
   
-  - name: "Setting up passwordless SSH"
-  - name: "Configuring NFS"
-  - name: "Configuring NTP"
+  # passwordless ssh
+  - name: Setting up passwordless SSH on the {{ headnode }}
+  - command: "{{ item }}"
+    with_items:
+        ssh-keygen -t rsa -b 4096
+        cat ~/.ssh/id_rsa.pub > ~/.ssh/authorized_keys
+        ssh-copy-id {{ headnode }}
+
+
+# setting up nfs 
+  - name: Show mount options on the {{ headnode }}
+  - showmount -e {{ headnode }}
+  - name: Edit fstab
+    lineinfile: 
+          path: /etc/fstab
+          line: "{{ headnode }}:/home /home nfs defaults 0 0 "
+          state: present
+          backup: yes 
+  - name: Mount everything
+  - command: mount -av
+
   
+# ntp configuration 
+  - name: Synching with the {{ headnode }}. Replacing {{ debian_pool }}'s
+    replace: 
+          path: /etc/ntp.conf
+          after: ''
+          before: ''
+          regexp: "server timehost.stolaf.edu"
+          replace: 
+
+          line: pool 0.debian.pool.ntp.org iburst
+          state: present 
+          backup: yes
+
+
+# log out and back in for nfs mounting to happen?
