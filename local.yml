@@ -34,15 +34,17 @@
       owner: "{{ ansible_facts['user_id'] }}"
       state: touch
 
-  - name: "Setting up passwordless SSH on the headnode"
+  - name: "Setting up passwordless SSH"
     openssh_keypair:
       path: "{{ ansible_facts['user_dir'] }}/.ssh/id_rsa"
   
   - name: "Copying the SSH key to the authorized_keys file"
-    authorized_key:
-      user: /home/"{{ ansible_facts['user_id'] }}"
-      state: present
-      key: "{{ lookup('file', '{{ ansible_facts[''user_dir''] }}/.ssh/id_rsa.pub') }}"
+    shell: cat "{{ ansible_facts['user_dir'] }}/.ssh/id_rsa.pub" > "{{ ansible_facts['user_dir'] }}/.ssh/authorized_keys"
+
+#    authorized_key:
+#      user: /home/"{{ ansible_facts['user_id'] }}"
+#      state: present
+#      key: "{{ lookup('file', '{{ ansible_facts[''user_dir''] }}/.ssh/id_rsa.pub') }}"
 
   - name: "ssh-copy-id to the headnode"
     shell: ansible-playbook -i 172.27.1.254 deploy_authorized_keys.yml --ask-pass
