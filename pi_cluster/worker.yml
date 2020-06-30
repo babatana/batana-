@@ -77,8 +77,8 @@
 
 # Update the /etc/hosts file
 
-- name: Updating /etc/hosts
-  command: 
+#- name: Updating /etc/hosts
+#  command: 
   
 
 # log out and back in for nfs mounting to happen?
