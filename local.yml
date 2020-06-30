@@ -1,6 +1,6 @@
 ---
-#INSTALLING PACKAGES AND CONFIGURING THE WORKER NODE
-#- - - - - - - - - - - - - - - - - - - - - - - - - - 
+# INSTALLING PACKAGES AND CONFIGURING THE WORKER NODE
+# - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 - hosts: localhost
   tasks:
