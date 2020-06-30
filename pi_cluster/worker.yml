@@ -3,37 +3,50 @@
   remote_user: root
   tasks:   
   - name: Updating /etc/hosts
+
   - name: "Installing necessary packages"
+    become: yes
     apt:
       pkg:
       - nfs-kernel-server
       - ntp 
-      - openmpi-bin openmpi-common libopenmpi3 libopenmpi-dev 
+      - openmpi-bin 
+      - openmpi-common 
+      - libopenmpi3 
+      - libopenmpi-dev 
   
   # passwordless ssh
   - name: Setting up passwordless SSH on the {{ headnode }}
-  - command: "{{ item }}"
-    with_items:
-        ssh-keygen -t rsa -b 4096
-        cat ~/.ssh/id_rsa.pub > ~/.ssh/authorized_keys
-        ssh-copy-id {{ headnode }}
+    openssh_keypair:
+      path: "{{ ansible_facts['user_dir'] }}/.ssh/id_rsa"
+  
+  - name: Copying the SSH key to the authorized_keys file
+    authorized_key:
+      user: "{{ ansible_facts['user_id'] }}"
+      state: present
+      key: "{{ lookup('file', '{{ ansible_facts[''user_dir''] }}/.ssh/id_rsa.pub') }}"
+
+  - name: ssh-copy-id to the headnode 
+    shell: ansible-playbook -i 172.27.1.254 deploy_authorized_keys.yml --ask-pass
 
 
 # setting up nfs 
-  - name: Show mount options on the {{ headnode }}
-  - showmount -e {{ headnode }}
-  - name: Edit fstab
+  - name: Show mount options on the {{ ansible_host }}
+    shell: showmount -e {{ ansible_host }}
+  
+  - name: Configure /etc/fstab
     lineinfile: 
           path: /etc/fstab
-          line: "{{ headnode }}:/home /home nfs defaults 0 0 "
+          line: "{{ ansible_host }}:/home /home nfs defaults 0 0 "
           state: present
           backup: yes 
+
   - name: Mount everything
   - command: mount -av
 
   
 # ntp configuration 
-  - name: Synching with the {{ headnode }}. Replacing {{ debian_pool }}'s
+  - name: Synching time with the {{ ansible_host }}. Replacing {{ debian_pool }}'s
     replace: 
           path: /etc/ntp.conf
           after: ''
