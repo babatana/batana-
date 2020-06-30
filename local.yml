@@ -22,13 +22,13 @@
 
 #++++++++++++++++++++++++++++++++++++++
   # passwordless ssh
-  - name: create the .shh directory 
+  - name: "Create the .shh directory" 
     file:
       path: "{{ ansible_facts['user_dir'] }}/.ssh"
       owner: "{{ ansible_facts['user_id'] }}"
       state: directory
 
-  - name: create the the authorized_keys file in .ssh
+  - name: "Create the the authorized_keys file in .ssh"
     file:
       path: "{{ ansible_facts['user_dir'] }}/.ssh/authorized_keys"
       owner: "{{ ansible_facts['user_id'] }}"
@@ -40,7 +40,7 @@
   
   - name: "Copying the SSH key to the authorized_keys file"
     authorized_key:
-      user: "172.27.1.254"
+      user: "{{ ansible_facts['user_id'] }}"
       state: present
       key: "{{ lookup('file', '{{ ansible_facts[''user_dir''] }}/.ssh/id_rsa.pub') }}"
 
