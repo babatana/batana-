@@ -1,10 +1,98 @@
 ---
+#INSTALLING PACKAGES AND CONFIGURING THE WORKER NODE
+#- - - - - - - - - - - - - - - - - - - - - - - - - - 
+
 - hosts: localhost
-  become: yes
-  tasks:   
-  - name: Installing necessary packages
+  tasks:
+
+  # Installing the necessary packages 
+
+  - name: "Installing necessary packages"
+    become: yes
     apt:
       pkg:
       - nfs-kernel-server
       - ntp 
+      - openmpi-bin 
+      - openmpi-common 
+      - libopenmpi3 
+      - libopenmpi-dev 
+  
 
+
+#++++++++++++++++++++++++++++++++++++++
+  # passwordless ssh
+
+  - name: Setting up passwordless SSH on the {{ headnode }}
+    openssh_keypair:
+      path: "{{ ansible_facts['user_dir'] }}/.ssh/id_rsa"
+  
+  - name: Copying the SSH key to the authorized_keys file
+    authorized_key:
+      user: "{{ ansible_facts['user_id'] }}"
+      state: present
+      key: "{{ lookup('file', '{{ ansible_facts[''user_dir''] }}/.ssh/id_rsa.pub') }}"
+
+  - name: ssh-copy-id to the headnode 
+    shell: ansible-playbook -i 172.27.1.254 deploy_authorized_keys.yml --ask-pass
+
+
+
+#++++++++++++++++++++++++++++++++++++++
+# setting up nfs 
+
+  - name: Configure /etc/fstab
+    become: yes
+    lineinfile: 
+      path: /etc/fstab
+      line: "172.27.1.254:/home /home nfs defaults 0 0 "
+      state: present
+      backup: yes 
+
+  - name: Mount everything
+    become: yes
+    mount:
+      path: /home
+      src: 172.27.1.254:/home
+      fstype: nfs
+      state: mounted
+
+
+
+#++++++++++++++++++++++++++++++++++++++
+# ntp configuration 
+
+- name: Modify NTP in worker node  
+  become: yes
+  lineinfile:
+    path: /etc/ntp.conf
+    regexp: '{{item.From}}'
+    replace: '{{item.To}}'
+    with_items:
+      - { From: 'pool 0.debian.pool.ntp.org iburst', To: '#pool 0.debian.pool.ntp.org iburst'}
+      - { From: 'pool 1.debian.pool.ntp.org iburst', To: '#pool 1.debian.pool.ntp.org iburst'}
+      - { From: 'pool 2.debian.pool.ntp.org iburst', To: '#pool 2.debian.pool.ntp.org iburst'}
+      - { From: 'pool 3.debian.pool.ntp.org iburst', To: '#pool 3.debian.pool.ntp.org iburst'}
+
+- name: Set the head node as the time server
+  become: yes
+  lineinfile:
+    path: /etc/ntp.conf
+    line: "172.27.1.254"
+    insertbefore: "# Access control configuration; see /usr/share/doc/ntp-doc/html/accopt.html for"
+
+- name: Restart NTP in worker node   
+  become: yes
+  command:
+    cmd: "systemctl restart ntp"
+
+
+
+#++++++++++++++++++++++++++++++++++++++
+# Update the /etc/hosts file
+
+#- name: Updating /etc/hosts
+#  command: 
+  
+
+# log out and back in for nfs mounting to happen?
