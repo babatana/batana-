@@ -28,6 +28,12 @@
       owner: "{{ ansible_facts['user_id'] }}"
       state: directory
 
+  - name: create the the authorized_keys file in .ssh
+    file:
+      path: "{{ ansible_facts['user_dir'] }}/.ssh/authorized_keys"
+      owner: "{{ ansible_facts['user_id'] }}"
+      state: touch
+
   - name: "Setting up passwordless SSH on the headnode"
     openssh_keypair:
       path: "{{ ansible_facts['user_dir'] }}/.ssh/id_rsa"
