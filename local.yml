@@ -45,7 +45,7 @@
     become: yes
     lineinfile: 
       path: /etc/fstab
-      line: "172.27.1.254:/home /home nfs defaults 0 0 "
+      line: "172.27.1.254:/home /home nfs defaults 0 0"
       state: present
       backup: yes 
 
@@ -62,37 +62,37 @@
 #++++++++++++++++++++++++++++++++++++++
 # ntp configuration 
 
-- name: "Modify NTP in worker node " 
-  become: yes
-  lineinfile:
-    path: /etc/ntp.conf
-    regexp: '{{item.From}}'
-    replace: '{{item.To}}'
-    with_items:
-      - { From: 'pool 0.debian.pool.ntp.org iburst', To: '#pool 0.debian.pool.ntp.org iburst'}
-      - { From: 'pool 1.debian.pool.ntp.org iburst', To: '#pool 1.debian.pool.ntp.org iburst'}
-      - { From: 'pool 2.debian.pool.ntp.org iburst', To: '#pool 2.debian.pool.ntp.org iburst'}
-      - { From: 'pool 3.debian.pool.ntp.org iburst', To: '#pool 3.debian.pool.ntp.org iburst'}
+  - name: "Modify NTP in worker node" 
+    become: yes
+    lineinfile:
+      path: /etc/ntp.conf
+      regexp: '{{item.From}}'
+      replace: '{{item.To}}'
+      with_items:
+        - { From: 'pool 0.debian.pool.ntp.org iburst', To: '#pool 0.debian.pool.ntp.org iburst'}
+        - { From: 'pool 1.debian.pool.ntp.org iburst', To: '#pool 1.debian.pool.ntp.org iburst'}
+        - { From: 'pool 2.debian.pool.ntp.org iburst', To: '#pool 2.debian.pool.ntp.org iburst'}
+        - { From: 'pool 3.debian.pool.ntp.org iburst', To: '#pool 3.debian.pool.ntp.org iburst'}
 
-- name: "Set the head node as the time server"
-  become: yes
-  lineinfile:
-    path: /etc/ntp.conf
-    line: "pool 172.27.1.254"
-    insertbefore: "# Access control configuration; see /usr/share/doc/ntp-doc/html/accopt.html for"
+  - name: "Set the head node as the time server"
+    become: yes
+    lineinfile:
+      path: /etc/ntp.conf
+      line: "pool 172.27.1.254"
+      insertbefore: "# Access control configuration; see /usr/share/doc/ntp-doc/html/accopt.html for"
 
-- name: "Restart NTP in worker node"   
-  become: yes
-  command:
-    cmd: "systemctl restart ntp"
+  - name: "Restart NTP in worker node"   
+    become: yes
+    command:
+      cmd: "systemctl restart ntp"
 
 
 
 #++++++++++++++++++++++++++++++++++++++
-# Update the /etc/hosts file
+  # Update the /etc/hosts file
 
-#- name: Updating /etc/hosts
-#  command: 
+  #- name: Updating /etc/hosts
+  #  command: 
   
 
 # log out and back in for nfs mounting to happen?
