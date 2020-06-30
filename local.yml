@@ -22,8 +22,11 @@
 
 #++++++++++++++++++++++++++++++++++++++
   # passwordless ssh
+  - name: create the .shh directory 
+    shell:
+      cmd: mkdir "{{ ansible_facts['user_dir'] }}/.ssh"
 
-  - name: "Setting up passwordless SSH on the {{ headnode }}"
+  - name: "Setting up passwordless SSH on the headnode"
     openssh_keypair:
       path: "{{ ansible_facts['user_dir'] }}/.ssh/id_rsa"
   
