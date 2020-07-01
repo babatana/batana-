@@ -52,21 +52,22 @@
 
 
 #++++++++++++++++++++++++++++++++++++++
-# setting up nfs 
+# setting up nfs
+   
 
   - name: "Configure /etc/fstab"
     become: yes
     lineinfile: 
       path: /etc/fstab
-      line: "172.27.1.254:/home /home nfs defaults 0 0"
+      line: "172.27.1.254:/CSinParallel /CSinParallel nfs defaults 0 0"
       state: present
       backup: yes 
 
   - name: "Mount everything"
     become: yes
     mount:
-      path: /home
-      src: 172.27.1.254:/home
+      path: /CSinParallel
+      src: 172.27.1.254:/CSinParallel
       fstype: nfs
       state: mounted
 
