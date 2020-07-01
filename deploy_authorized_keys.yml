@@ -1,0 +1,10 @@
+
+---
+- hosts: all
+  tasks:
+  - name: Copying the SSH key to the authorized_keys file
+    authorized_key:
+      user: "{{ ansible_facts['user_id'] }}"
+      state: present
+      key: "{{ lookup('file', '{{ ansible_facts[''user_dir''] }}/.ssh/id_rsa.pub') }}"
+
