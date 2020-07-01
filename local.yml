@@ -46,8 +46,8 @@
 #      state: present
 #      key: "{{ lookup('file', '{{ ansible_facts[''user_dir''] }}/.ssh/id_rsa.pub') }}"
 
-  - name: "ssh-copy-id to the headnode"
-    shell: ansible-playbook -i 172.27.1.254 deploy_authorized_keys.yml --ask-pass
+  #- name: "ssh-copy-id to the headnode"
+  #  shell: ansible-playbook -i 172.27.1.254 deploy_authorized_keys.yml --ask-pass
 
 
 
