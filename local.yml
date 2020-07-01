@@ -86,11 +86,11 @@
       path: /etc/ntp.conf
       regexp: '{{item.From}}'
       line: '{{item.To}}'
-      with_items:
-        - { From: 'pool 0.debian.pool.ntp.org iburst', To: '#pool 0.debian.pool.ntp.org iburst'}
-        - { From: 'pool 1.debian.pool.ntp.org iburst', To: '#pool 1.debian.pool.ntp.org iburst'}
-        - { From: 'pool 2.debian.pool.ntp.org iburst', To: '#pool 2.debian.pool.ntp.org iburst'}
-        - { From: 'pool 3.debian.pool.ntp.org iburst', To: '#pool 3.debian.pool.ntp.org iburst'}
+    with_items:
+      - { From: 'pool 0.debian.pool.ntp.org iburst', To: '#pool 0.debian.pool.ntp.org iburst'}
+      - { From: 'pool 1.debian.pool.ntp.org iburst', To: '#pool 1.debian.pool.ntp.org iburst'}
+      - { From: 'pool 2.debian.pool.ntp.org iburst', To: '#pool 2.debian.pool.ntp.org iburst'}
+      - { From: 'pool 3.debian.pool.ntp.org iburst', To: '#pool 3.debian.pool.ntp.org iburst'}
 
   - name: "Set the head node as the time server"
     become: yes
