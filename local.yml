@@ -51,7 +51,7 @@
 #      key: "{{ lookup('file', '{{ ansible_facts[''user_dir''] }}/.ssh/id_rsa.pub') }}"
 
   - name: "ssh-copy-id to the headnode"
-    shell: ansible-playbook -i 172.27.1.254 deploy_authorized_keys.yml --ask-pass
+    shell: ansible-playbook -i 172.27.1.2 deploy_authorized_keys.yml --ask-pass
 
 
 
@@ -63,15 +63,15 @@
     become: yes
     lineinfile: 
       path: /etc/fstab
-      line: "172.27.1.254:/CSinParallel /CSinParallel nfs defaults 0 0"
+      line: "172.27.1.2:/HDMPI /HDMPI nfs defaults 0 0"
       state: present
       backup: yes 
 
   - name: "Mount everything"
     become: yes
     mount:
-      path: /CSinParallel
-      src: 172.27.1.254:/CSinParallel
+      path: /HDMPI
+      src: 172.27.1.2:/HDMPI
       fstype: nfs
       state: mounted
 
@@ -96,7 +96,7 @@
     become: yes
     lineinfile:
       path: /etc/ntp.conf
-      line: "pool 172.27.1.254"
+      line: "pool 172.27.1.2"
       insertbefore: "# Access control configuration; see /usr/share/doc/ntp-doc/html/accopt.html for"
 
   - name: "Restart NTP in worker node"   
@@ -104,13 +104,5 @@
     command:
       cmd: "systemctl restart ntp"
 
-
-
-#++++++++++++++++++++++++++++++++++++++
-  # Update the /etc/hosts file
-
-  #- name: Updating /etc/hosts
-  #  command: 
-  
 
 # log out and back in for nfs mounting to happen?

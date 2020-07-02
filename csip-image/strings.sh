@@ -1,11 +1,15 @@
 #! /bin/bash
 
 
+# reading stdin from terminal
 
 echo "enter string 1"
 read st1
 echo "enter string 2"
 read st2
+
+
+# comparing stdin from terminal
 
 if [ "$st1" == "$st2" ]
 then 
@@ -16,3 +20,14 @@ then
 else
     echo "st1 is greater"
 fi 
+
+
+# concatenating strings 
+
+c=$st1$st2
+echo "$c"
+
+
+# uppercase string 
+echo "${c^^}"
+echo "${c^m}"
