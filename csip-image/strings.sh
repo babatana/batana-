@@ -3,7 +3,7 @@
 
 # reading stdin from terminal
 
-echo "enter string 1"
+# echo "enter mpirun command"
 read st1
 echo "enter string 2"
 read st2
