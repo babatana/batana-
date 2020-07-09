@@ -105,4 +105,4 @@
       cmd: "systemctl restart ntp"
 
 
-# log out and back in for nfs mounting to happen?
+# log out and back in for nfs mounting to happen ?
